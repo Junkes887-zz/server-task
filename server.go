@@ -11,14 +11,20 @@ type User struct {
 }
 
 func main() {
-	// http.HandleFunc("/", helloServer)
+	http.HandleFunc("/", helloServer)
 	http.HandleFunc("/users", listemUsers)
     http.ListenAndServe(":8080", nil)
 }
 
-// func helloServer(w http.ResponseWriter, r *http.Request) {
-//     fmt.Fprintf(w,"Hello!")
-// }
+func helloServer(w http.ResponseWriter, r *http.Request) {
+	js, err := json.Marshal("Server run port 8080...")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+    w.Write(js)
+}
 
 func listemUsers(w http.ResponseWriter, r *http.Request) {
 	// var listUser [2]ListUser
