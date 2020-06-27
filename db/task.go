@@ -48,3 +48,46 @@ func FindAllTask(dbConn *sql.DB) ([]model.Task, error) {
 
 	return list, nil
 }
+
+// FindByIDTask buscar por id
+func FindByIDTask(dbConn *sql.DB, id string) (model.Task, error) {
+	sel, err := dbConn.Query("SELECT * FROM task WHERE id=$1", id)
+	var task model.Task
+
+	for sel.Next() {
+		var id int
+		var name, description string
+		var status model.Status
+
+		err = sel.Scan(&id, &name, &description, &status)
+		if err != nil {
+			return task, err
+		}
+
+		task = model.Task{
+			ID:          id,
+			Name:        name,
+			Description: description,
+			Status:      status,
+		}
+	}
+
+	return task, nil
+
+}
+
+// UptadeTask adiciona uma tarefa no banco
+func UptadeTask(dbConn *sql.DB, dto model.Task) error {
+	insForm, err := dbConn.Prepare("UPDATE task SET name = $2, description = $3, status = $4 WHERE id = $1")
+	if err != nil {
+		return err
+	}
+
+	_, err = insForm.Exec(dto.ID, dto.Name, dto.Description, dto.Status)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
