@@ -1,6 +1,4 @@
-# go-server
-
-Init aplication
+### Init aplication
 ``
 go run main.go
 ``
