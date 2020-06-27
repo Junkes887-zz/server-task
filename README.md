@@ -1,4 +1,4 @@
 # go-server
 ``
-go run server.go /run server
+go run main.go /run server
 ``
