@@ -91,3 +91,19 @@ func UptadeTask(dbConn *sql.DB, dto model.Task) error {
 
 	return nil
 }
+
+// UptadeTask adiciona uma tarefa no banco
+func DeleteTask(dbConn *sql.DB, id string) error {
+	insForm, err := dbConn.Prepare("delete  from task  where id = $1")
+	if err != nil {
+		return err
+	}
+
+	_, err = insForm.Exec(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

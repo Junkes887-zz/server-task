@@ -36,5 +36,6 @@ func main() {
 	router.GET("/task/:id", task.FindByIDTask)
 	router.POST("/task", task.CreateTask)
 	router.PUT("/task", task.UptadeTask)
+	router.DELETE("/task/:id", task.DeleteTask)
 	http.ListenAndServe(":8080", router)
 }

@@ -87,3 +87,14 @@ func (t Task) UptadeTask(w http.ResponseWriter, r *http.Request, _ httprouter.Pa
 		return
 	}
 }
+
+// DeleteTask ...
+func (t Task) DeleteTask(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	id := p.ByName("id")
+	err := db.DeleteTask(t.DB, id)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+}
