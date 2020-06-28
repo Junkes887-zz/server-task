@@ -1,26 +1,34 @@
 package main
 
 import (
-	"database/sql"
+	"fmt"
 	"net/http"
+	"net/url"
 
-	_ "github.com/lib/pq"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/Junkes887/go-server/handler"
 	"github.com/julienschmidt/httprouter"
 )
 
-var db *sql.DB
+var db *gorm.DB
 
-func dbConn() (db *sql.DB) {
-	dbDriver := "postgres"
-	dbUser := "postgres"
-	dbPass := "go"
-	dbName := "postgres"
+func dbConn() (db *gorm.DB) {
 
-	db, err := sql.Open(dbDriver, "postgres://"+dbUser+":"+dbPass+"@localhost:5433/"+dbName+"?sslmode=disable")
+	dsn := url.URL{
+		User:     url.UserPassword("postgres", "go"),
+		Scheme:   "postgres",
+		Host:     fmt.Sprintf("%s:%d", "localhost", 5433),
+		Path:     "postgres",
+		RawQuery: (&url.Values{"sslmode": []string{"disable"}}).Encode(),
+	}
+
+	db, err := gorm.Open("postgres", dsn.String())
+	db.SingularTable(true)
 
 	if err != nil {
+		fmt.Println(err.Error)
 		panic(err.Error())
 	}
 	return db
@@ -31,11 +39,14 @@ func main() {
 	defer db.Close()
 	router := httprouter.New()
 	task := handler.Task{DB: db}
+	status := handler.Status{DB: db}
 	router.GET("/", handler.HelloServer)
+	router.GET("/status", status.FindAllSatus)
+	router.POST("/status", status.CreateStatus)
+	router.PUT("/status", status.UpdateStatus)
 	router.GET("/task", task.FindAllTask)
-	router.GET("/task/:id", task.FindByIDTask)
 	router.POST("/task", task.CreateTask)
 	router.PUT("/task", task.UptadeTask)
 	router.DELETE("/task/:id", task.DeleteTask)
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":3333", router)
 }
