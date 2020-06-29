@@ -2,7 +2,7 @@
 ``
 go run main.go
 ``
-### Init front
+### Init front-task
 ``
 npm install
 npm start
