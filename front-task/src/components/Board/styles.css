@@ -1,0 +1,5 @@
+.board {
+    display: flex;
+    padding: 30px 0;
+    height: 100%;
+}

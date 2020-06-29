@@ -1,0 +1,35 @@
+.list {
+    padding: 0 15px;
+    height: 100%;
+    flex: 0 0 320px;
+}
+
+.list & + div {
+    border-left: 1px solid rgba(0, 0, 0, 1);
+}
+
+.list .header-list{ 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 42px;
+}
+
+.list .header-list h2{ 
+    font-weight: 500;
+    font-size: 16px;
+    padding: 0 10px;
+}
+
+.list .header-list button{ 
+    width: 42px;
+    height: 42px;
+    border-radius: 25px;
+    background: #34BD04;
+    border: 0;
+    cursor: pointer;
+}
+
+.list ul {
+    margin-top: 30px;
+}
