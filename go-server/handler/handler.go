@@ -40,11 +40,12 @@ func (t Task) FindAllTask(w http.ResponseWriter, r *http.Request, _ httprouter.P
 }
 
 // CreateTask ...
-func (t Task) CreateTask(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (t Task) CreateTask(w http.ResponseWriter, r *http.Request, _ httprouter.Params) model.Task {
 	var p model.Task
 
 	json.NewDecoder(r.Body).Decode(&p)
 	db.AddTask(t.DB, p)
+	return p
 }
 
 // UptadeTask ...

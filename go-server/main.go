@@ -10,6 +10,7 @@ import (
 
 	"github.com/Junkes887/go-server/handler"
 	"github.com/julienschmidt/httprouter"
+	"github.com/rs/cors"
 )
 
 var db *gorm.DB
@@ -48,5 +49,7 @@ func main() {
 	router.POST("/task", task.CreateTask)
 	router.PUT("/task", task.UptadeTask)
 	router.DELETE("/task/:id", task.DeleteTask)
-	http.ListenAndServe(":3333", router)
+	handlerCors := cors.Default().Handler(router)
+
+	http.ListenAndServe(":3333", handlerCors)
 }

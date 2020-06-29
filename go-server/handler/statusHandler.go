@@ -17,9 +17,6 @@ type Status struct {
 
 // FindAllSatus ...
 func (t Status) FindAllSatus(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 	list := db.FindAllStatus(t.DB)
 
 	js, err := json.Marshal(list)
@@ -28,8 +25,6 @@ func (t Status) FindAllSatus(w http.ResponseWriter, r *http.Request, _ httproute
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
 }
 
