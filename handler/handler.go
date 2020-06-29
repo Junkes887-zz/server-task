@@ -40,12 +40,20 @@ func (t Task) FindAllTask(w http.ResponseWriter, r *http.Request, _ httprouter.P
 }
 
 // CreateTask ...
-func (t Task) CreateTask(w http.ResponseWriter, r *http.Request, _ httprouter.Params) model.Task {
+func (t Task) CreateTask(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var p model.Task
 
 	json.NewDecoder(r.Body).Decode(&p)
-	db.AddTask(t.DB, p)
-	return p
+	dto := db.AddTask(t.DB, p)
+
+	js, err := json.Marshal(dto)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.Write(js)
 }
 
 // UptadeTask ...
@@ -53,7 +61,16 @@ func (t Task) UptadeTask(w http.ResponseWriter, r *http.Request, _ httprouter.Pa
 	var p model.Task
 
 	json.NewDecoder(r.Body).Decode(&p)
-	db.UptadeTask(t.DB, p)
+	dto := db.UptadeTask(t.DB, p)
+
+	js, err := json.Marshal(dto)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.Write(js)
 }
 
 // DeleteTask ...

@@ -49,7 +49,7 @@ func main() {
 	router.POST("/task", task.CreateTask)
 	router.PUT("/task", task.UptadeTask)
 	router.DELETE("/task/:id", task.DeleteTask)
-	handlerCors := cors.Default().Handler(router)
-
+	c := cors.AllowAll()
+	handlerCors := c.Handler(router)
 	http.ListenAndServe(":3333", handlerCors)
 }

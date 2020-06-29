@@ -14,14 +14,15 @@ func FindAllTask(dbConn *gorm.DB) []model.Task {
 }
 
 // AddTask adiciona uma tarefa no banco
-func AddTask(dbConn *gorm.DB, dto model.Task) mode.Task {
+func AddTask(dbConn *gorm.DB, dto model.Task) model.Task {
 	dbConn.Create(&dto)
 	return dto
 }
 
 // UptadeTask adiciona uma tarefa no banco
-func UptadeTask(dbConn *gorm.DB, dto model.Task) {
+func UptadeTask(dbConn *gorm.DB, dto model.Task) model.Task {
 	dbConn.Save(&dto)
+	return dto
 }
 
 // DeleteTask adiciona uma tarefa no banco
