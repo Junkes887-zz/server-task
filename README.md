@@ -1,9 +1,7 @@
-### Init go-server
-``
-go run main.go
-``
-### Init front-task
-``
-npm install
-npm start
-``
+# Server Task
+Manager tasks
+
+### Init
+go-server `go run main.go`
+
+Front application: https://github.com/Junkes887/task-manager
