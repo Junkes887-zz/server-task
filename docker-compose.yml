@@ -1,0 +1,37 @@
+
+version: '3'
+services:
+  app:
+    container_name: task-server-go
+    build: .
+    ports: 
+      - 3333:3333 
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - db
+    networks:
+      - fullstack
+
+  db:
+    image: postgres
+    container_name: task_db_postgres
+    environment:
+      - POSTGRES_PASSWORD=go
+    ports:
+      - '5433:5432'
+    volumes:
+      - ./app/db:/var/lib/postgresql/data
+    networks:
+      - fullstack
+    restart: always
+
+volumes:
+  api:
+  db:                  
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fullstack:
+    driver: bridge

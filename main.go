@@ -20,7 +20,7 @@ func dbConn() (db *gorm.DB) {
 	dsn := url.URL{
 		User:     url.UserPassword("postgres", "go"),
 		Scheme:   "postgres",
-		Host:     fmt.Sprintf("%s:%d", "localhost", 5433),
+		Host:     fmt.Sprintf("%s:%d", "task_db_postgres", 5432),
 		Path:     "postgres",
 		RawQuery: (&url.Values{"sslmode": []string{"disable"}}).Encode(),
 	}
