@@ -2,6 +2,6 @@
 Manager tasks
 
 ### Init
-go-server `go run main.go`
+go-server `docker-compose up -d`
 
 Front application: https://github.com/Junkes887/task-manager
