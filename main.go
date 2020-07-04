@@ -39,6 +39,10 @@ func dbConn() (db *gorm.DB) {
 
 func main() {
 	port := os.Getenv("PORT")
+	if port == "" {
+		fmt.Errorf("$PORT not set")
+		return
+	}
 	db = dbConn()
 	defer db.Close()
 	router := httprouter.New()
