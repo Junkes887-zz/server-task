@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"net/url"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -16,16 +16,18 @@ import (
 var db *gorm.DB
 
 func dbConn() (db *gorm.DB) {
+	dbUrl := os.Getenv("DATABASE_URL")
 
-	dsn := url.URL{
-		User:     url.UserPassword("postgres", "go"),
-		Scheme:   "postgres",
-		Host:     fmt.Sprintf("%s:%d", "task_db_postgres", 5432),
-		Path:     "postgres",
-		RawQuery: (&url.Values{"sslmode": []string{"disable"}}).Encode(),
-	}
+	// dsn := url.URL{
+	// 	User:     url.UserPassword("postgres", "go"),
+	// 	Scheme:   "postgres",
+	// 	Host:     fmt.Sprintf("%s:%d", "task_db_postgres", 5432),
+	// 	Path:     "postgres",
+	// 	RawQuery: (&url.Values{"sslmode": []string{"disable"}}).Encode(),
+	// }
 
-	db, err := gorm.Open("postgres", dsn.String())
+	// db, err := gorm.Open("postgres", dsn.String())
+	db, err := gorm.Open("postgres", dbUrl)
 	db.SingularTable(true)
 
 	if err != nil {
@@ -36,6 +38,7 @@ func dbConn() (db *gorm.DB) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
 	db = dbConn()
 	defer db.Close()
 	router := httprouter.New()
@@ -51,5 +54,5 @@ func main() {
 	router.DELETE("/task/:id", task.DeleteTask)
 	c := cors.AllowAll()
 	handlerCors := c.Handler(router)
-	http.ListenAndServe(":3333", handlerCors)
+	http.ListenAndServe(port, handlerCors)
 }
