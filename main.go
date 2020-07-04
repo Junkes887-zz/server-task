@@ -58,5 +58,5 @@ func main() {
 	router.DELETE("/task/:id", task.DeleteTask)
 	c := cors.AllowAll()
 	handlerCors := c.Handler(router)
-	http.ListenAndServe(port, handlerCors)
+	http.ListenAndServe(":"+port, handlerCors)
 }
