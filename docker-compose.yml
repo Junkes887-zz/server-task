@@ -1,10 +1,10 @@
 
 version: '3'
 services:
-  app:
+  api:
     container_name: task-server-go
     build: .
-    ports: 
+    ports:
       - 3333:3333 
     restart: on-failure
     volumes:

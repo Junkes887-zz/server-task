@@ -7,6 +7,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 
 	"github.com/Junkes887/go-server/handler"
 	"github.com/julienschmidt/httprouter"
@@ -17,16 +18,10 @@ var db *gorm.DB
 
 func dbConn() (db *gorm.DB) {
 	dbUrl := os.Getenv("DATABASE_URL")
-
-	// dsn := url.URL{
-	// 	User:     url.UserPassword("postgres", "go"),
-	// 	Scheme:   "postgres",
-	// 	Host:     fmt.Sprintf("%s:%d", "task_db_postgres", 5432),
-	// 	Path:     "postgres",
-	// 	RawQuery: (&url.Values{"sslmode": []string{"disable"}}).Encode(),
-	// }
-
-	// db, err := gorm.Open("postgres", dsn.String())
+	if dbUrl == "" {
+		fmt.Errorf("$URL not set")
+		return
+	}
 	db, err := gorm.Open("postgres", dbUrl)
 	db.SingularTable(true)
 
@@ -38,6 +33,7 @@ func dbConn() (db *gorm.DB) {
 }
 
 func main() {
+	godotenv.Load()
 	port := os.Getenv("PORT")
 	if port == "" {
 		fmt.Errorf("$PORT not set")
@@ -59,4 +55,5 @@ func main() {
 	c := cors.AllowAll()
 	handlerCors := c.Handler(router)
 	http.ListenAndServe(":"+port, handlerCors)
+	fmt.Println("Server runner in port: " + port)
 }
